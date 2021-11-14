@@ -33,15 +33,17 @@ public class InvoiceServiceImpl implements InvoiceService{
     public InvoiceResponseDTO save(InvoiceRequestDTO invoiceRequestDTO) throws CustomerNotFoundException {
         Invoice invoice = invoiceMapper.fromInvoiceResponseDTO(invoiceRequestDTO);
         Customer customer = null;
-        try {
-            customer = customerRestClient.customerById(invoiceRequestDTO.getCustomerId());
-        }catch (Exception e) {
-            throw new CustomerNotFoundException("Customer not found");
-        }
+        customer = customerRestClient.customerById(invoiceRequestDTO.getCustomerId());
+        System.out.println(customer);
+//        try {
+//        }catch (Exception e) {
+//            throw new CustomerNotFoundException("Customer not found");
+//        }
         invoice.setId(UUID.randomUUID().toString());
         invoice.setDate(new Date());
+        invoice.setCustomerID(customer.getId());
+        invoice.setCustomer(customer);
         Invoice save = invoiceRepository.save(invoice);
-        save.setCustomer(customer);
         return invoiceMapper.invoiceToInvoiceResponseDTO(save);
     }
 
@@ -68,7 +70,7 @@ public class InvoiceServiceImpl implements InvoiceService{
     @Override
     public List<InvoiceResponseDTO> getAllInvoice() {
         List<Invoice> invoices = invoiceRepository.findAll();
-        for (Invoice invoice :invoices) {
+        for (Invoice invoice : invoices) {
             Customer customer = customerRestClient.customerById(invoice.getCustomerID());
             invoice.setCustomer(customer);
         }

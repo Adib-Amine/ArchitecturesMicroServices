@@ -8,7 +8,7 @@ import java.util.List;
 
 @FeignClient(name="CUSTOMER-SERVICE")
 public interface CustomerRestClient {
-    @GetMapping(path = "/api/cutomers/{id}")
+    @GetMapping(path = "/api/customers/{id}")
     public Customer customerById(@PathVariable String id);
 
     @GetMapping(path = "/api/customers")

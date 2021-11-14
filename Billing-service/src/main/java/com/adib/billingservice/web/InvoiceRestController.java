@@ -15,18 +15,22 @@ import java.util.List;
 public class InvoiceRestController {
     private InvoiceService invoiceService;
 
-    @GetMapping(path = "/invoices/")
-    public List<InvoiceResponseDTO> getAllInvoice(){
+    public InvoiceRestController(InvoiceService invoiceService) {
+        this.invoiceService = invoiceService;
+    }
+
+    @GetMapping(path = "/invoices")
+    public List<InvoiceResponseDTO> getAllInvoice() {
         return invoiceService.getAllInvoice();
     }
 
     @GetMapping(path = "/invoices/{id}")
-    public InvoiceResponseDTO getInvoice(@PathVariable String id){
+    public InvoiceResponseDTO getInvoice(@PathVariable String id) {
         return invoiceService.getInvoice(id);
     }
 
     @GetMapping(path = "/invoiceByCutomer/{id}")
-    public List<InvoiceResponseDTO> getInvoicesByCustomrt(@PathVariable String id){
+    public List<InvoiceResponseDTO> getInvoicesByCustomrt(@PathVariable String id) {
         return invoiceService.invoicesByCustomerId(id);
     }
 
@@ -36,7 +40,7 @@ public class InvoiceRestController {
     }
 
     @ExceptionHandler(Exception.class)
-    public String exceptionHandler(Exception e){
+    public String exceptionHandler(Exception e) {
         return e.getMessage();
     }
 
